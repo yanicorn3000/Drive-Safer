@@ -38,7 +38,9 @@ const CommentsList = () => {
                   <p className="text-sm font-medium text-gray-900">
                     {comment.name}
                   </p>
+
                   <p className="text-sm text-gray-500">{comment.message}</p>
+                  <span className="text-sm text-gray-400">Data</span>
                 </div>
               </div>
             </li>
