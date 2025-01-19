@@ -1,5 +1,4 @@
 import styles from "./CommentsList.module.scss";
-import clsx from "clsx";
 
 const comments = [
   {

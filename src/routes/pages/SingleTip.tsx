@@ -1,8 +1,14 @@
+import { useState } from "react";
+import { FC } from "react";
 import Button from "../../components/button/Button";
 import Comments from "../../components/comments/Comments";
 import CommentsList from "../../components/comments/CommentsList";
+import QuizModal from "./modal/QuizModal";
+import Quiz from "../../components/quiz/Quiz";
 
-const SingleTip = () => {
+const SingleTip: FC = () => {
+  const [isModalOpen, setModalOpen] = useState(false);
+
   return (
     <section className="mx-auto mt-10 max-w-5xl flex flex-col justify-center gap-7 items-center">
       <h2 className="text-3xl font-bold border-b-2 border-green-300">
@@ -55,35 +61,24 @@ const SingleTip = () => {
             quibusdam rem harum iste expedita, enim repellat, excepturi voluptas
             culpa pariatur maiores, quaerat perferendis vero provident? Sequi in
             aperiam quod possimus tempora, veniam fugit laborum illo natus autem
-            quisquam molestias magnam reprehenderit totam aut adipisci similique
-            nam nobis dignissimos quos perferendis cupiditate. Facilis totam,
-            esse iste fugit eaque eius, quae aliquid nisi voluptatem a numquam
-            ullam, dolorum perspiciatis possimus inventore quia alias labore
-            debitis quibusdam asperiores laudantium autem consequatur explicabo!
-            Ex reprehenderit quo at fugiat dolor nobis doloremque quis libero
-            animi natus incidunt consequuntur, quod doloribus earum nesciunt
-            temporibus! Aut quis unde omnis tempora? Quas dolores, non dolore
-            culpa tempore dolorem assumenda iusto perspiciatis a est deserunt
-            modi, facere quam molestiae voluptate velit quis itaque. Fugiat
-            assumenda quasi repellendus voluptate architecto incidunt ad
-            molestias laborum iste quam illo, repellat quidem neque dolorum iure
-            quod? Esse deserunt reiciendis aspernatur obcaecati quam, dicta
-            pariatur, minima delectus itaque accusamus alias nesciunt incidunt
-            provident adipisci consequatur possimus.
           </p>
           <div className="flex justify-end gap-10 w-full items-center">
             <span>Like</span>
             <span>Share</span>
-            <Button
-              variant="secondary"
-              onClick={() => console.log("Primary clicked")}
-            >
+            <span>Tagi</span>
+            <Button variant="secondary" onClick={() => setModalOpen(true)}>
               Trening
             </Button>
           </div>
         </div>
       </div>
-
+      <QuizModal
+        isOpen={isModalOpen}
+        onClose={() => setModalOpen(false)}
+        title="Trening"
+      >
+        <Quiz onClose={() => setModalOpen(false)} />
+      </QuizModal>
       <Comments />
       <CommentsList />
     </section>

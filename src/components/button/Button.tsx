@@ -6,7 +6,7 @@ type ClassNameProp = {
 };
 
 type ButtonProps = {
-  variant: "primary" | "secondary";
+  variant: "primary" | "secondary" | "close";
 } & ClassNameProp &
   ButtonHTMLAttributes<HTMLButtonElement>;
 
@@ -25,9 +25,11 @@ const Button = ({
         {
           "text-white bg-violet-500 hover:bg-violet-700 focus:ring-violet-300 ":
             variant === "primary" && !disabled,
-          "text-white bg-green-400 hover:bg-gray-600 focus:ring-green-300":
+          "text-white bg-green-500 hover:bg-green-600 focus:ring-green-300 border-none":
             variant === "secondary" && !disabled,
           "opacity-50 cursor-not-allowed": disabled,
+          "px-3 py-1 border-none hover:bg-slate-200":
+            variant === "close" && !disabled,
         }
       )}
       disabled={disabled}
