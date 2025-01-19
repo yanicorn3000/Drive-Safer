@@ -1,0 +1,9 @@
+@use "../../utils.scss" as *;
+
+.user {
+  @include icon() {
+    @extend .fa-user;
+    font-size: 1.3em;
+    @apply text-green-400 p-2;
+  }
+}

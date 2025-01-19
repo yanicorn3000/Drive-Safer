@@ -1,0 +1,9 @@
+@use "../../utils.scss" as *;
+
+.arrow {
+  @include icon() {
+    @extend .fa-arrow-right;
+    font-size: 1em;
+    @apply text-white;
+  }
+}

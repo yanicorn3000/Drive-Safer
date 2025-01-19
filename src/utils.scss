@@ -1,0 +1,21 @@
+$fa-font-path: "@fortawesome/fontawesome-free/webfonts";
+@import "@fortawesome/fontawesome-free/scss/fontawesome.scss";
+@import "@fortawesome/fontawesome-free/scss/solid.scss";
+@import "@fortawesome/fontawesome-free/scss/regular.scss";
+@import "@fortawesome/fontawesome-free/scss/brands.scss";
+
+@mixin icon($type: solid) {
+  @if $type == solid {
+    @extend .fa-solid;
+  }
+
+  @if $type == regular {
+    @extend .fa-regular;
+  }
+
+  @if $type == brands {
+    @extend .fa-brands;
+  }
+
+  @content;
+}
