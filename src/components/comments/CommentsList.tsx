@@ -1,23 +1,26 @@
 import styles from "./CommentsList.module.scss";
-import clsx from "clsx";
+import { clsx } from "clsx";
 
 const comments = [
   {
     name: "Alice",
     message:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. At iure hic, rem voluptas adipisci quasi asperiores vitae architecto accusantium non porro inventore quod delectus nulla voluptatum fugiat minima sapiente laudantium repudiandae! Modi molestias labore provident autem enim dolor assumenda natus fugit, animi suscipit! Quidem pariatur ea libero assumenda hic consequuntur ",
+    date: "2025-01-02",
   },
 
   {
     name: "Mike",
     message:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. At iure hic ",
+    date: "2024-12-06",
   },
 
   {
     name: "Bob",
     message:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. At iure hic, rem voluptas adipisci quasi asperiores vitae architecto accusantium non porro inventore quod delectus nulla voluptatum fugiat",
+    date: "2024-09-07",
   },
 ];
 
@@ -35,11 +38,42 @@ const CommentsList = () => {
                 <div className="flex-shrink-0 self-start flex justify-center items-center w-10 h-10  bg-green-100 rounded-full">
                   <span className={styles.user}></span>
                 </div>
-                <div className="flex-1 min-w-0">
+                <div className="flex flex-col gap-1 flex-1 min-w-0">
                   <p className="text-sm font-medium text-gray-900">
                     {comment.name}
                   </p>
+
                   <p className="text-sm text-gray-500">{comment.message}</p>
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs text-gray-400">
+                      {comment.date}
+                    </span>
+                    <div className="flex gap-1">
+                      <button
+                        onClick={() => {
+                          console.log("like + 1");
+                        }}
+                        className="flex bg-transparent gap-1 border-none focus:outline-none"
+                      >
+                        <span
+                          className={clsx(styles.like, "hover:text-pink-500")}
+                        ></span>
+                        <span className="text-xs text-gray-400">Likes</span>
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          console.log("reply");
+                        }}
+                        className="flex bg-transparent gap-1 border-none focus:outline-none"
+                      >
+                        <span
+                          className={clsx(styles.reply, "hover:text-green-400")}
+                        ></span>
+                        <span className="text-xs text-gray-400">Odpowiedz</span>
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </li>
