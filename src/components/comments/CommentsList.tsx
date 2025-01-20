@@ -7,6 +7,7 @@ const comments = [
     message:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. At iure hic, rem voluptas adipisci quasi asperiores vitae architecto accusantium non porro inventore quod delectus nulla voluptatum fugiat minima sapiente laudantium repudiandae! Modi molestias labore provident autem enim dolor assumenda natus fugit, animi suscipit! Quidem pariatur ea libero assumenda hic consequuntur ",
     date: "2025-01-02",
+    id: 1,
   },
 
   {
@@ -14,6 +15,7 @@ const comments = [
     message:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. At iure hic ",
     date: "2024-12-06",
+    id: 2,
   },
 
   {
@@ -21,6 +23,7 @@ const comments = [
     message:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. At iure hic, rem voluptas adipisci quasi asperiores vitae architecto accusantium non porro inventore quod delectus nulla voluptatum fugiat",
     date: "2024-09-07",
+    id: 3,
   },
 ];
 
@@ -33,7 +36,7 @@ const CommentsList = () => {
       <ul className="w-full divide-y divide-gray-200">
         {comments.map((comment) => {
           return (
-            <li className="p-5 sm:pb-6">
+            <li key={comment.id} className="p-5 sm:pb-6">
               <div className="flex items-center space-x-4 rtl:space-x-reverse">
                 <div className="flex-shrink-0 self-start flex justify-center items-center w-10 h-10  bg-green-100 rounded-full">
                   <span className={styles.user}></span>
