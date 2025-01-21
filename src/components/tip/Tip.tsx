@@ -3,6 +3,8 @@ import Button from "../button/Button";
 import styles from "./Tip.module.scss";
 import { Link } from "react-router";
 import { Tip as TTip } from "../../utils/tips";
+import Likes from "../reactions/Likes";
+import Tags from "../reactions/Tags";
 
 const Tip: FC<TTip> = ({ title, id, description, img, alt }) => {
   const href = `/tip/${id}`;
@@ -18,17 +20,18 @@ const Tip: FC<TTip> = ({ title, id, description, img, alt }) => {
             {title}
           </h5>
 
-          <p className="font-normal text-gray-700 dark:text-gray-400">
+          <p className="font-normal line-clamp-5 text-gray-700 dark:text-gray-400 ">
             {description}
           </p>
+          <Tags />
+
           <div className="flex justify-between w-full items-center">
-            <span>Hearts</span>
-            <span>Comments</span>
+            <div className="flex gap-2">
+              <Likes entityType="tip" entityId={id} disabled />
+              <span>Comments</span>
+            </div>
             <Link to={href}>
-              <Button
-                variant="primary"
-                onClick={() => console.log("Primary clicked")}
-              >
+              <Button variant="primary">
                 Więcej <span className={styles.arrow}></span>
               </Button>
             </Link>

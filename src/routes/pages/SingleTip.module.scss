@@ -1,0 +1,9 @@
+@use "../../utils.scss" as *;
+
+.share {
+  @include icon() {
+    @extend .fa-share;
+    font-size: 1.3em;
+    @apply text-slate-400 hover:text-violet-500 bg-transparent border-none focus:outline-none focus:ring-0 p-0;
+  }
+}

@@ -1,33 +1,13 @@
 import styles from "./CommentsList.module.scss";
 import { clsx } from "clsx";
+import Likes from "../reactions/Likes";
+import { Comment } from "./AddCommentsForm";
+import { FC } from "react";
 
-const comments = [
-  {
-    name: "Alice",
-    message:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. At iure hic, rem voluptas adipisci quasi asperiores vitae architecto accusantium non porro inventore quod delectus nulla voluptatum fugiat minima sapiente laudantium repudiandae! Modi molestias labore provident autem enim dolor assumenda natus fugit, animi suscipit! Quidem pariatur ea libero assumenda hic consequuntur ",
-    date: "2025-01-02",
-    id: 1,
-  },
-
-  {
-    name: "Mike",
-    message:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. At iure hic ",
-    date: "2024-12-06",
-    id: 2,
-  },
-
-  {
-    name: "Bob",
-    message:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. At iure hic, rem voluptas adipisci quasi asperiores vitae architecto accusantium non porro inventore quod delectus nulla voluptatum fugiat",
-    date: "2024-09-07",
-    id: 3,
-  },
-];
-
-const CommentsList = () => {
+type CommentsListProps = {
+  comments: Comment[];
+};
+const CommentsList: FC<CommentsListProps> = ({ comments }) => {
   return (
     <section className="w-full flex flex-col gap-5">
       <h5 className="text-xl font-bold tracking-tight text-gray-900">
@@ -51,19 +31,8 @@ const CommentsList = () => {
                     <span className="text-xs text-gray-400">
                       {comment.date}
                     </span>
-                    <div className="flex gap-1">
-                      <button
-                        onClick={() => {
-                          console.log("like + 1");
-                        }}
-                        className="flex bg-transparent gap-1 border-none focus:outline-none"
-                      >
-                        <span
-                          className={clsx(styles.like, "hover:text-pink-500")}
-                        ></span>
-                        <span className="text-xs text-gray-400">Likes</span>
-                      </button>
-
+                    <div className="flex gap-1 text-xs">
+                      <Likes entityType="comment" entityId={comment.id} />
                       <button
                         onClick={() => {
                           console.log("reply");
@@ -73,7 +42,9 @@ const CommentsList = () => {
                         <span
                           className={clsx(styles.reply, "hover:text-green-400")}
                         ></span>
-                        <span className="text-xs text-gray-400">Odpowiedz</span>
+                        <span className="text-xs text-slate-400">
+                          Odpowiedz
+                        </span>
                       </button>
                     </div>
                   </div>
