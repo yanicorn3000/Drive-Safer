@@ -12,7 +12,6 @@
   @include icon() {
     @extend .fa-heart;
     font-size: 1.1em;
-    @apply text-gray-400;
   }
 }
 

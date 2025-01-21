@@ -1,0 +1,9 @@
+@use "../../../utils.scss" as *;
+
+.close {
+  @include icon() {
+    @extend .fa-xmark;
+    font-size: 1em;
+    @apply text-slate-500;
+  }
+}
