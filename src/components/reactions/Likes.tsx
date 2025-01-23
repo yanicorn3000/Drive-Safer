@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes, useState } from "react";
 import clsx from "clsx";
-import styles from "./Likes.module.scss";
+import styles from "./Reactions.module.scss";
 
 type ClassNameProp = {
   className?: string;

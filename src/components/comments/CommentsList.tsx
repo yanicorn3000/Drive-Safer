@@ -1,5 +1,4 @@
 import styles from "./CommentsList.module.scss";
-import { clsx } from "clsx";
 import Likes from "../reactions/Likes";
 import { Comment } from "./AddCommentsForm";
 import { FC } from "react";
@@ -33,19 +32,6 @@ const CommentsList: FC<CommentsListProps> = ({ comments }) => {
                     </span>
                     <div className="flex gap-1 text-xs">
                       <Likes entityType="comment" entityId={comment.id} />
-                      <button
-                        onClick={() => {
-                          console.log("reply");
-                        }}
-                        className="flex bg-transparent gap-1 border-none focus:outline-none"
-                      >
-                        <span
-                          className={clsx(styles.reply, "hover:text-green-400")}
-                        ></span>
-                        <span className="text-xs text-slate-400">
-                          Odpowiedz
-                        </span>
-                      </button>
                     </div>
                   </div>
                 </div>

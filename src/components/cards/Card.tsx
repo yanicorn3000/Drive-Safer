@@ -5,6 +5,7 @@ import { Link } from "react-router";
 import { Tip } from "../../utils/tips";
 import Likes from "../reactions/Likes";
 import Tags from "../reactions/Tags";
+import Comments from "../reactions/Comments";
 
 const Card: FC<Tip> = ({ title, img, alt, description, id }) => {
   const href = `/tip/${id}`;
@@ -27,8 +28,11 @@ const Card: FC<Tip> = ({ title, img, alt, description, id }) => {
         </p>
         <Tags />
         <div className="flex justify-between items-center mt-3">
-          <Likes entityType="tip" entityId={id} disabled />
-          <span>Comments</span>
+          <div className="flex">
+            <Likes entityType="tip" entityId={id} disabled />
+            <Comments disabled />
+          </div>
+
           <Link to={href}>
             <Button variant="primary">
               Więcej <span className={styles.arrow}></span>

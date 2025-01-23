@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { FC } from "react";
+import { FC, useState, useRef } from "react";
 import Button from "../../components/button/Button";
 import AddCommentsForm from "../../components/comments/AddCommentsForm";
 import QuizModal from "./modal/QuizModal";
@@ -10,16 +9,27 @@ import { useParams } from "react-router";
 import Likes from "../../components/reactions/Likes";
 import styles from "./SingleTip.module.scss";
 import Tags from "../../components/reactions/Tags";
+import Comments from "../../components/reactions/Comments";
 
 const SingleTip: FC = () => {
   const [isModalOpen, setModalOpen] = useState(false);
-
   const params = useParams();
 
   const tip = useQuery({
     queryKey: ["singleTip", params.id],
     queryFn: () => getTipById(Number(params.id)),
   });
+
+  const commentSectionRef = useRef<HTMLDivElement>(null);
+
+  const handleScroll = () => {
+    if (commentSectionRef.current) {
+      commentSectionRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  };
 
   return tip.data ? (
     <section className="mx-auto mt-10 max-w-5xl flex flex-col justify-center gap-7 items-center">
@@ -39,6 +49,7 @@ const SingleTip: FC = () => {
           <Tags />
           <div className="flex justify-end gap-5 w-full items-center">
             <Likes entityType="tip" entityId={tip.data.id} />
+            <Comments onClick={handleScroll} />
             <button className={styles.share}></button>
 
             <Button variant="secondary" onClick={() => setModalOpen(true)}>
@@ -54,7 +65,7 @@ const SingleTip: FC = () => {
       >
         <Quiz onClose={() => setModalOpen(false)} />
       </QuizModal>
-      <AddCommentsForm />
+      <AddCommentsForm ref={commentSectionRef} />
     </section>
   ) : null;
 };

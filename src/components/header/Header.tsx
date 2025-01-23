@@ -3,6 +3,8 @@ import style from "./Header.module.scss";
 import Button from "../button/Button";
 import LoginModal from "../../routes/pages/modal/LoginModal";
 import Login from "../login/Login";
+import { useAppContext } from "../../utils/appContext";
+import Popover from "./Popover";
 
 const navLinks = [
   {
@@ -28,6 +30,7 @@ const navLinks = [
 
 const Header = () => {
   const [isModalOpen, setModalOpen] = useState(false);
+  const { user, logout } = useAppContext();
 
   return (
     <>
@@ -43,9 +46,25 @@ const Header = () => {
             </h1>
           </a>
           <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-            <Button variant="primary" onClick={() => setModalOpen(true)}>
-              Zaloguj się{" "}
-            </Button>
+            {user ? (
+              <Popover buttonLabel={user}>
+                <p className="text-gray-700">
+                  Liczba punktów:<span className="font-bold ml-4">10</span>
+                </p>
+                <Button
+                  variant="primary"
+                  className="mt-2 px-2 py-1 flex items-center gap-3 justify-center"
+                  onClick={logout}
+                >
+                  Wyloguj się
+                  <span className={style.logout}></span>
+                </Button>
+              </Popover>
+            ) : (
+              <Button variant="primary" onClick={() => setModalOpen(true)}>
+                Zaloguj się{" "}
+              </Button>
+            )}
           </div>
           <div
             className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
@@ -65,6 +84,7 @@ const Header = () => {
           </div>
         </div>
       </nav>
+
       <LoginModal
         isOpen={isModalOpen}
         onClose={() => setModalOpen(false)}

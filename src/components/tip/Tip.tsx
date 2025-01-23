@@ -5,6 +5,7 @@ import { Link } from "react-router";
 import { Tip as TTip } from "../../utils/tips";
 import Likes from "../reactions/Likes";
 import Tags from "../reactions/Tags";
+import Comments from "../reactions/Comments";
 
 const Tip: FC<TTip> = ({ title, id, description, img, alt }) => {
   const href = `/tip/${id}`;
@@ -27,8 +28,8 @@ const Tip: FC<TTip> = ({ title, id, description, img, alt }) => {
 
           <div className="flex justify-between w-full items-center">
             <div className="flex gap-2">
-              <Likes entityType="tip" entityId={id} disabled />
-              <span>Comments</span>
+              <Likes entityType="tip" entityId={id} disabled={true} />
+              <Comments disabled />
             </div>
             <Link to={href}>
               <Button variant="primary">
