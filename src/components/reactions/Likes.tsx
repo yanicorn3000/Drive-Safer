@@ -1,40 +1,46 @@
-import { ButtonHTMLAttributes, useState } from "react";
+import { ButtonHTMLAttributes, useMemo } from "react";
 import clsx from "clsx";
 import styles from "./Reactions.module.scss";
-
-type ClassNameProp = {
-  className?: string;
-};
+import { EntityType } from "../../utils/types";
+import { FC } from "react";
+import { useAddLike, useRemoveLike } from "../../utils/api";
 
 type ReactionProps = {
-  entityType: "tip" | "comment";
-  entityId: number;
-} & ClassNameProp &
-  ButtonHTMLAttributes<HTMLButtonElement>;
+  entityType: EntityType;
+  entityUUID: string;
+  likes: string[];
+} & ButtonHTMLAttributes<HTMLButtonElement>;
 
-const db = {
-  "tip:1": 10,
-  "tip:2": 12,
-  "tip:3": 9,
-  "tip:4": 17,
-  "comment:1": 10,
-  "comment:2": 1,
-  "comment:3": 30,
-} as Record<string, number>;
+const userUUID = "test";
 
-const Likes = ({
-  className,
+const Likes: FC<ReactionProps> = ({
   disabled,
-  entityId,
+  entityUUID,
   entityType,
+  likes,
   ...rest
-}: ReactionProps) => {
-  const [likes, setLikes] = useState(db[`${entityType}:${entityId}`]);
-  const [liked, setLiked] = useState(false);
+}) => {
+  const { mutateAsync: addLike } = useAddLike();
+  const { mutateAsync: removeLike } = useRemoveLike();
+
+  const liked = useMemo(() => {
+    return !!likes.find((usernameUUID) => usernameUUID === userUUID);
+  }, [likes, userUUID]);
 
   const handleLike = () => {
-    setLikes((prevState) => prevState + (liked ? -1 : 1));
-    setLiked((prevState) => !prevState);
+    if (!liked) {
+      addLike({
+        usernameUUID: userUUID,
+        entityUUID,
+        entityType,
+      });
+    } else {
+      removeLike({
+        usernameUUID: userUUID,
+        entityUUID,
+        entityType,
+      });
+    }
   };
 
   return (
@@ -46,8 +52,7 @@ const Likes = ({
         className={clsx(
           styles.like,
           "flex bg-transparent gap-1 border-none focus:outline-none focus:ring-0 p-0",
-          liked ? "text-pink-400" : "text-slate-400",
-          className
+          liked ? "text-pink-400" : "text-slate-400"
         )}
         disabled={disabled}
         {...rest}
@@ -55,7 +60,7 @@ const Likes = ({
       <span
         className={clsx("text-sm", liked ? "text-pink-400" : "text-slate-400")}
       >
-        {likes}
+        {likes.length}
       </span>
     </div>
   );

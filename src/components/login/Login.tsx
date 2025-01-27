@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { useReducer, ReactNode } from "react";
 import { FC } from "react";
 import { useAppContext } from "../../utils/appContext";
 import Form from "./Form";
@@ -35,7 +35,7 @@ const loginReducer = (state: LoginState, action: Action): LoginState => {
   }
 };
 
-const Login: FC = () => {
+const Login: FC<{ formToggler: ReactNode }> = ({ formToggler }) => {
   const { login, user } = useAppContext();
   const [state, dispatch] = useReducer(loginReducer, initialState);
 
@@ -59,7 +59,6 @@ const Login: FC = () => {
         return;
       }
       dispatch({ type: "CLEAR_ERROR" });
-      //   console.log("Logging in with:", state.email, state.password);
     } catch (error: unknown) {
       if (error instanceof Error) {
         dispatch({
@@ -85,13 +84,16 @@ const Login: FC = () => {
           <h3 className="text-lg font-medium">Jesteś zalogowany!</h3>
         </div>
       ) : (
-        <Form
-          submit={handleSubmit}
-          error={state.error}
-          email={state.email}
-          password={state.password}
-          dispatch={dispatch}
-        />
+        <>
+          <Form
+            submit={handleSubmit}
+            error={state.error}
+            email={state.email}
+            password={state.password}
+            dispatch={dispatch}
+          />
+          {formToggler}
+        </>
       )}
     </>
   );

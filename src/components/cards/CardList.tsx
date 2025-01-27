@@ -1,23 +1,26 @@
 import Card from "./Card";
-import { Tip } from "../../utils/tips";
 import { FC } from "react";
+import { Tip } from "../../utils/types";
 
-const CardList: FC<{ tips: Tip[] }> = ({ tips }) => {
+const CardList: FC<{ tips: Tip[]; tag?: string }> = ({ tips, tag }) => {
   return (
     <section className="flex flex-col mx-auto mt-14 max-w-5xl gap-7 items-center">
       <h2 className="text-3xl font-bold border-b-2 border-green-300 text-center">
-        Porady
+        {tag ? `#${tag}` : "Porady"}
       </h2>
       <div className="grid grid-cols-3 gap-7">
-        {tips.map((e) => {
+        {tips.map((tip) => {
           return (
             <Card
-              key={e.id}
-              title={e.title}
-              img={e.img}
-              alt={e.alt}
-              description={e.description}
-              id={e.id}
+              key={tip.uuid}
+              title={tip.title}
+              img={tip.img}
+              alt={tip.alt}
+              description={tip.description}
+              uuid={tip.uuid}
+              tags={tip.tags}
+              likes={tip.likes}
+              comments={tip.comments}
             />
           );
         })}

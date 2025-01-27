@@ -1,52 +1,32 @@
 import Button from "../button/Button";
-import {
-  useState,
-  useEffect,
-  FormEvent,
-  forwardRef,
-  ForwardedRef,
-} from "react";
+import { useState, FormEvent, forwardRef, ForwardedRef } from "react";
 import CommentsList from "./CommentsList";
+import { Comment } from "../../utils/types";
+import { useAddComment } from "../../utils/api";
 
-export type Comment = {
-  id: number;
-  message: string;
-  name?: string;
-  date: string;
-  likes: number;
-  isLiked: boolean;
+type AddCommentsFormProps = {
+  comments: Comment[];
+  entityUUID: string;
 };
 
-type AddCommentsFormProps = {};
-
 const AddCommentsForm = forwardRef<HTMLDivElement, AddCommentsFormProps>(
-  (_, ref: ForwardedRef<HTMLDivElement>) => {
+  (
+    { comments: propsComments, entityUUID },
+    ref: ForwardedRef<HTMLDivElement>
+  ) => {
+    const { mutateAsync: addComment } = useAddComment();
     const [newComment, setNewComment] = useState<string>("");
-    const [comments, setComments] = useState<Comment[]>([]);
-    const [currentDate, setCurrentDate] = useState<string>("");
-
-    useEffect(() => {
-      const date = new Date();
-      const formattedDate = date.toLocaleDateString("pl-PL", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      });
-      setCurrentDate(formattedDate);
-    }, []);
 
     const handleAddComment = (e: FormEvent) => {
       e.preventDefault();
       if (newComment.trim()) {
-        const newCommentObject: Comment = {
-          id: comments.length + 1,
+        addComment({
+          entityUUID,
+          username: "",
           message: newComment,
-          date: currentDate,
-          likes: 0,
-          isLiked: false,
-        };
-        setComments([newCommentObject, ...comments]);
-        setNewComment("");
+        }).then(() => {
+          setNewComment("");
+        });
       }
     };
 
@@ -76,7 +56,7 @@ const AddCommentsForm = forwardRef<HTMLDivElement, AddCommentsFormProps>(
           </form>
         </div>
         <div ref={ref} className="w-full">
-          <CommentsList comments={comments} />
+          <CommentsList comments={propsComments} />
         </div>
       </>
     );

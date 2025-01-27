@@ -1,8 +1,17 @@
 import Button from "../button/Button";
+import { FC } from "react";
 
-const Form = ({ submit, error, email, password, dispatch }) => {
+type FormProps = {
+  submit: (e: React.MouseEvent<HTMLButtonElement>) => void; //
+  error?: string;
+  email: string;
+  password: string;
+  dispatch: (action: { type: string; payload: unknown }) => void;
+};
+
+const Form: FC<FormProps> = ({ submit, error, email, password, dispatch }) => {
   return (
-    <form className="flex flex-col max-w-sm mx-auto gap-2">
+    <form className="flex flex-col max-w-sm mx-auto">
       {error && (
         <div className="bg-red-100 text-red-700 p-2 rounded text-center text-sm place-self-center">
           {error}
@@ -11,7 +20,7 @@ const Form = ({ submit, error, email, password, dispatch }) => {
       <div className="mb-5">
         <label
           htmlFor="email"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          className="block mb-2 text-sm font-medium text-gray-900"
         >
           Login
         </label>
@@ -22,7 +31,7 @@ const Form = ({ submit, error, email, password, dispatch }) => {
           onChange={(e) =>
             dispatch({ type: "SET_EMAIL", payload: e.target.value })
           }
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-violet-500 focus:border-violet-500 block w-full p-2.5"
           placeholder="email@example.com"
           required
         />
@@ -30,7 +39,7 @@ const Form = ({ submit, error, email, password, dispatch }) => {
       <div className="mb-5">
         <label
           htmlFor="password"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          className="block mb-2 text-sm font-medium text-gray-900"
         >
           Hasło
         </label>
@@ -41,7 +50,8 @@ const Form = ({ submit, error, email, password, dispatch }) => {
           onChange={(e) =>
             dispatch({ type: "SET_PASSWORD", payload: e.target.value })
           }
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-violet-500 focus:border-violet-500 block w-full p-2.5"
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-violet-500 focus:border-violet-500 block 
+        p-2.5 w-full"
           required
         />
       </div>
@@ -53,11 +63,6 @@ const Form = ({ submit, error, email, password, dispatch }) => {
       >
         Zaloguj się
       </Button>
-      <div className="mt-3 self-center">
-        <button className="text-sm text-violet-500 bg-transparent hover:underline border-none outline-none">
-          Nie masz konta? Zarejestruj się
-        </button>
-      </div>
     </form>
   );
 };
