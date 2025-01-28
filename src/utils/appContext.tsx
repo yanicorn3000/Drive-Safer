@@ -1,10 +1,26 @@
-import { createContext, useContext, useState, ReactNode, FC } from "react";
-// import { useLocalStorageState } from "./localStorage";
+import { createContext, useContext, ReactNode, FC } from "react";
+import { useLocalStorageState } from "./localStorage";
+import {
+  useUserData,
+  useLogin,
+  useAddUser,
+  useUserPoints,
+  USER_LS_KEY,
+} from "../utils/api";
+
+type User = {
+  email: string;
+  points: number;
+  username: string;
+  uuid: string;
+};
 
 type AppContextType = {
-  user: string | null;
+  user: User | null;
   login: (email: string, password: string) => Promise<boolean>;
+  register: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
+  updatePoints: (points: number) => Promise<boolean>;
 };
 
 export const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -13,25 +29,56 @@ type AppProviderProps = {
   children: ReactNode;
 };
 
-// const USER_LS_KEY = "user_data";
-
 export const AppProvider: FC<AppProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<string | null>(null);
+  const { data: user, isLoading, isError, refetch } = useUserData();
+  const { mutateAsync: loginUser } = useLogin();
+  const { mutateAsync: addUser } = useAddUser();
+  const [token, setToken] = useLocalStorageState<string | null>(
+    USER_LS_KEY,
+    null
+  );
+  const { mutateAsync: addPoints } = useUserPoints();
 
   const login = async (email: string, password: string): Promise<boolean> => {
-    if (email === "test@test.pl" && password === "test") {
-      setUser(email);
+    try {
+      const data = await loginUser({ email, password });
+      setToken(data.token);
+      refetch();
       return true;
+    } catch (error) {
+      console.error("Błąd logowania:", error);
+      return false;
     }
-    return false;
+  };
+  const logout = (): void => {
+    refetch();
+    setToken(null);
+  };
+  const register = async (
+    email: string,
+    password: string
+  ): Promise<boolean> => {
+    const data = await addUser({ email, password });
+    setToken(data.token);
+    refetch();
+    return true;
   };
 
-  const logout = (): void => {
-    setUser(null);
+  const updatePoints = async (points: number): Promise<boolean> => {
+    try {
+      await addPoints({ points });
+      refetch();
+      return true;
+    } catch (error) {
+      console.error("Błąd podczas dodawania punktów:", error);
+      return false;
+    }
   };
 
   return (
-    <AppContext.Provider value={{ user, login, logout }}>
+    <AppContext.Provider
+      value={{ user, login, logout, register, updatePoints }}
+    >
       {children}
     </AppContext.Provider>
   );

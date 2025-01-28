@@ -40,7 +40,7 @@ const Modal: FC<{
       {isLogin ? (
         <Login formToggler={formToggler} />
       ) : (
-        <Register formToggler={formToggler} />
+        <Register formToggler={formToggler} onClose={resetOnClose} />
       )}
     </LoginModal>
   );

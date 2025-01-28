@@ -7,15 +7,15 @@ import { AppProvider } from "../utils/appContext.tsx";
 
 const App = () => {
   return (
-    <AppProvider>
-      <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      <AppProvider>
         <BrowserRouter>
           <Layout>
             <Routes />
           </Layout>
         </BrowserRouter>
-      </QueryClientProvider>
-    </AppProvider>
+      </AppProvider>
+    </QueryClientProvider>
   );
 };
 

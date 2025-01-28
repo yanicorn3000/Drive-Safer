@@ -1,80 +1,131 @@
-import { FC, ReactNode } from "react";
-import Button from "../button/Button";
+import { FC, ReactNode, useReducer } from "react";
+import RegisterForm from "./RegisterForm";
+import { useAppContext } from "../../utils/appContext";
 
-const Register: FC<{ formToggler: ReactNode }> = (props) => {
+type RegisterState = {
+  email: string;
+  password: string;
+  repeatPassword: string;
+  isSamePassword: boolean;
+  error: string | null;
+};
+
+export type ActionRegister = {
+  type:
+    | "SET_EMAIL"
+    | "SET_PASSWORD"
+    | "SET_REPEAT_PASSWORD"
+    | "SET_ERROR"
+    | "CLEAR_ERROR";
+  payload?: string;
+};
+
+const initialState: RegisterState = {
+  email: "",
+  password: "",
+  repeatPassword: "",
+  isSamePassword: true,
+  error: null,
+};
+
+const registerReducer = (
+  state: RegisterState,
+  action: ActionRegister
+): RegisterState => {
+  switch (action.type) {
+    case "SET_EMAIL":
+      return { ...state, email: action.payload || "" };
+    case "SET_PASSWORD":
+      return {
+        ...state,
+        password: action.payload || "",
+        isSamePassword: state.password === action.payload,
+      };
+    case "SET_REPEAT_PASSWORD":
+      return {
+        ...state,
+        repeatPassword: action.payload || "",
+        isSamePassword: state.password === action.payload,
+      };
+
+    case "SET_ERROR":
+      return { ...state, error: action.payload || null };
+    case "CLEAR_ERROR":
+      return { ...state, error: null };
+    default:
+      return state;
+  }
+};
+
+const Register: FC<{ formToggler: ReactNode; onClose: () => void }> = ({
+  formToggler,
+  onClose,
+}) => {
+  const [state, dispatch] = useReducer(registerReducer, initialState);
+  const { register } = useAppContext();
+
+  const handleAddUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!state.email || !state.password) {
+      dispatch({
+        type: "SET_ERROR",
+        payload: "Pole nie moze być puste",
+      });
+      return;
+    }
+
+    try {
+      dispatch({
+        type: "CLEAR_ERROR",
+      });
+      await register(state.email, state.password);
+      onClose();
+    } catch (error: unknown) {
+      console.error("Wystąpił błąd:", error);
+
+      if (
+        error &&
+        typeof error === "object" &&
+        "message" in error &&
+        error.message
+      ) {
+        if (error.message === "User with this email already exists") {
+          dispatch({
+            type: "SET_ERROR",
+            payload: "Taki uzytkownik juz jest zarejestrowany.",
+          });
+          return;
+        }
+      }
+
+      if (error instanceof Error) {
+        dispatch({
+          type: "SET_ERROR",
+          payload: error.message,
+        });
+      } else {
+        dispatch({
+          type: "SET_ERROR",
+          payload: "Wystąpił błąd podczas logowania.",
+        });
+      }
+    }
+  };
+  console.log(state);
   return (
-    <>
-      <form className="flex flex-col max-w-sm mx-auto">
-        <div className="mb-5">
-          <label
-            htmlFor="email"
-            className="block mb-2 text-sm font-medium text-gray-90"
-          >
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            className="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-violet-500 focus:border-violet-500 block w-full p-2.5"
-            placeholder="example@example.com"
-            required
-          />
-        </div>
-
-        <div className="mb-5">
-          <label
-            htmlFor="password"
-            className="block mb-2 text-sm font-medium text-gray-900"
-          >
-            Hasło
-          </label>
-          <input
-            type="password"
-            id="password"
-            className="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-violet-500 focus:border-violet-500 block w-full p-2.5"
-            required
-          />
-        </div>
-        <div className="mb-5">
-          <label
-            htmlFor="repeat-password"
-            className="block mb-2 text-sm font-medium text-gray-900"
-          >
-            Powtórz hasło
-          </label>
-          <input
-            type="password"
-            id="repeat-password"
-            className="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-violet-500 focus:border-violet-500 block w-full p-2.5"
-            required
-          />
-        </div>
-        <div className="flex items-start mb-5">
-          <div className="flex items-center h-5">
-            <input
-              id="terms"
-              type="checkbox"
-              value=""
-              className="w-4 h-4 border border-gray-300 rounded-sm bg-gray-50 focus:ring-3 focus:ring-violet-300"
-              required
-            />
-          </div>
-          <label
-            htmlFor="terms"
-            className="ms-2 text-sm font-medium text-gray-900"
-          >
-            Akceptuję {""}
-            <a href="#" className="text-violet-600 hover:underline">
-              regulamin i politykę prywatności
-            </a>
-          </label>
-        </div>
-        <Button className="place-self-center" variant="primary" type="submit">
-          Zarejestruj się
-        </Button>
-      </form>
-      {props.formToggler}
-    </>
+    <RegisterForm
+      formToggler={formToggler}
+      handleAddUser={handleAddUser}
+      dispatch={dispatch}
+      email={state.email}
+      password={state.password}
+      repeatPassword={state.repeatPassword}
+      error={
+        state.error ||
+        (!state.isSamePassword ? "Hasła nie są identyczne" : undefined)
+      }
+    />
   );
 };
 

@@ -10,19 +10,7 @@ const CardList: FC<{ tips: Tip[]; tag?: string }> = ({ tips, tag }) => {
       </h2>
       <div className="grid grid-cols-3 gap-7">
         {tips.map((tip) => {
-          return (
-            <Card
-              key={tip.uuid}
-              title={tip.title}
-              img={tip.img}
-              alt={tip.alt}
-              description={tip.description}
-              uuid={tip.uuid}
-              tags={tip.tags}
-              likes={tip.likes}
-              comments={tip.comments}
-            />
-          );
+          return <Card key={tip.uuid} {...tip} />;
         })}
       </div>
     </section>

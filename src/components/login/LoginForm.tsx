@@ -1,15 +1,22 @@
 import Button from "../button/Button";
-import { FC } from "react";
+import { FC, Dispatch } from "react";
+import { Action } from "./Login";
 
-type FormProps = {
+type LoginFormProps = {
   submit: (e: React.MouseEvent<HTMLButtonElement>) => void; //
-  error?: string;
+  error?: string | null;
   email: string;
   password: string;
-  dispatch: (action: { type: string; payload: unknown }) => void;
+  dispatch: Dispatch<Action>;
 };
 
-const Form: FC<FormProps> = ({ submit, error, email, password, dispatch }) => {
+const LoginForm: FC<LoginFormProps> = ({
+  submit,
+  error,
+  email,
+  password,
+  dispatch,
+}) => {
   return (
     <form className="flex flex-col max-w-sm mx-auto">
       {error && (
@@ -67,4 +74,4 @@ const Form: FC<FormProps> = ({ submit, error, email, password, dispatch }) => {
   );
 };
 
-export default Form;
+export default LoginForm;

@@ -1,7 +1,7 @@
 import { useReducer, ReactNode } from "react";
 import { FC } from "react";
 import { useAppContext } from "../../utils/appContext";
-import Form from "./Form";
+import LoginForm from "./LoginForm";
 
 type LoginState = {
   email: string;
@@ -9,7 +9,7 @@ type LoginState = {
   error: string | null;
 };
 
-type Action = {
+export type Action = {
   type: "SET_EMAIL" | "SET_PASSWORD" | "SET_ERROR" | "CLEAR_ERROR";
   payload?: string;
 };
@@ -85,11 +85,11 @@ const Login: FC<{ formToggler: ReactNode }> = ({ formToggler }) => {
         </div>
       ) : (
         <>
-          <Form
+          <LoginForm
             submit={handleSubmit}
-            error={state.error}
             email={state.email}
             password={state.password}
+            error={state.error}
             dispatch={dispatch}
           />
           {formToggler}

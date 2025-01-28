@@ -45,15 +45,16 @@ const Header = () => {
             className="flex items-center space-x-3 rtl:space-x-reverse text-gray-600"
           >
             <span className={style.car} />
-            <h1 className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+            <h1 className="self-center text-2xl font-semibold whitespace-nowrap">
               Drive Safer
             </h1>
           </Link>
           <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
             {user ? (
-              <Popover buttonLabel={user}>
+              <Popover buttonLabel={user.email}>
                 <p className="text-gray-700">
-                  Liczba punktów:<span className="font-bold ml-4">10</span>
+                  Liczba punktów:
+                  <span className="font-bold ml-4">{user.points}</span>
                 </p>
                 <Button
                   variant="primary"

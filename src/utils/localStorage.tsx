@@ -9,12 +9,15 @@ const getLocalStorageData = (key: string) => {
   }
 };
 
-export const useLocalStorageState = (KEY: string, initialState = undefined) => {
-  const [data, setStateData] = useState(
+export const useLocalStorageState = <T = any,>(
+  KEY: string,
+  initialState = undefined
+) => {
+  const [data, setStateData] = useState<T>(
     getLocalStorageData(KEY) ?? initialState
   );
 
-  const setData = (data) => {
+  const setData = (data: T) => {
     if (data) {
       localStorage.setItem(KEY, JSON.stringify(data));
     } else {
@@ -24,5 +27,5 @@ export const useLocalStorageState = (KEY: string, initialState = undefined) => {
     setStateData(data);
   };
 
-  return [data, setData];
+  return [data, setData] as const;
 };

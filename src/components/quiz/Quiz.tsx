@@ -1,6 +1,6 @@
-import { useReducer } from "react";
-import { FC } from "react";
+import { useReducer, FC, useState } from "react";
 import Button from "../button/Button";
+import { useAppContext } from "../../utils/appContext";
 
 type Question = {
   question: string;
@@ -88,6 +88,17 @@ const quizReducer = (state: State, action: Action): State => {
 
 const Quiz: FC<QuizProps> = ({ onClose }) => {
   const [state, dispatch] = useReducer(quizReducer, initialState);
+  const { user, updatePoints } = useAppContext();
+
+  const handleAddPoints = async () => {
+    const success = await updatePoints(state.score);
+
+    if (!user) {
+      alert("Zaloguj się aby zapisać punkty!");
+      return;
+    }
+    onClose();
+  };
 
   const handleAnswer = (answer: string) => {
     dispatch({ type: "ANSWER", payload: answer });
@@ -104,13 +115,26 @@ const Quiz: FC<QuizProps> = ({ onClose }) => {
           Twój wynik: {state.score} / {questions.length}
         </h1>
         {state.score === questions.length ? (
-          <Button variant="secondary" onClick={() => onClose()}>
-            Zamkinj quiz
+          <Button variant="secondary" onClick={handleAddPoints}>
+            Zapisz punkty
           </Button>
         ) : (
-          <Button variant="primary" onClick={handleRestart}>
-            Zagraj ponownie
-          </Button>
+          <div className="flex gap-5 w-full justify-center items-center">
+            <Button
+              variant="primary"
+              onClick={handleRestart}
+              className="w-36 border-none"
+            >
+              Zagraj ponownie
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={handleAddPoints}
+              className="w-36"
+            >
+              Zapisz punkty
+            </Button>
+          </div>
         )}
       </div>
     );
