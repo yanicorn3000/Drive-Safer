@@ -2,12 +2,22 @@ import { FC } from "react";
 import Button from "../button/Button";
 import styles from "./Tip.module.scss";
 import { Link } from "react-router";
-import { Tip as TTip } from "../../utils/tips";
+import { Tip } from "../../utils/types";
 import Likes from "../reactions/Likes";
 import Tags from "../reactions/Tags";
+import Comments from "../reactions/Comments";
 
-const Tip: FC<TTip> = ({ title, id, description, img, alt }) => {
-  const href = `/tip/${id}`;
+const TipOfDay: FC<Tip> = ({
+  title,
+  uuid,
+  description,
+  img,
+  alt,
+  tags,
+  likes,
+  comments,
+}) => {
+  const href = `/tip/${uuid}`;
   return (
     <section className="mx-auto mt-10 max-w-5xl flex flex-col justify-center gap-7 items-center">
       <h2 className="text-3xl font-bold border-b-2 border-green-300">
@@ -23,12 +33,17 @@ const Tip: FC<TTip> = ({ title, id, description, img, alt }) => {
           <p className="font-normal line-clamp-5 text-gray-700 dark:text-gray-400 ">
             {description}
           </p>
-          <Tags />
+          <Tags tags={tags} />
 
           <div className="flex justify-between w-full items-center">
-            <div className="flex gap-2">
-              <Likes entityType="tip" entityId={id} disabled />
-              <span>Comments</span>
+            <div className="flex gap-4">
+              <Likes
+                entityType="tip"
+                entityUUID={uuid}
+                disabled={true}
+                likes={likes}
+              />
+              <Comments comments={comments} disabled />
             </div>
             <Link to={href}>
               <Button variant="primary">
@@ -42,4 +57,4 @@ const Tip: FC<TTip> = ({ title, id, description, img, alt }) => {
   );
 };
 
-export default Tip;
+export default TipOfDay;

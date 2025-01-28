@@ -1,23 +1,17 @@
-import { useQuery } from "@tanstack/react-query";
-import Tip from "../../components/tip/Tip";
+import TipOfDay from "../../components/tip/TipOfDay";
 import CardList from "../../components/cards/CardList";
-import { getTipOfDay, getTips } from "../../utils/tips";
+import { useTips, useTipOfTheDay } from "../../utils/api";
 
 const IndexPage = () => {
-  const tip = useQuery({
-    queryKey: ["tipOfDay"],
-    queryFn: getTipOfDay,
-  });
+  const { data } = useTips(3);
+  const { data: dataTipOfTheDay } = useTipOfTheDay();
 
-  const tips = useQuery({
-    queryKey: ["tipList"],
-    queryFn: () => getTips(true),
-  });
+  if (!data || !dataTipOfTheDay) return null;
 
   return (
     <>
-      {tip.data ? <Tip {...tip.data} /> : null}
-      {tips.data ? <CardList tips={tips.data} /> : null}
+      {dataTipOfTheDay ? <TipOfDay {...dataTipOfTheDay} /> : null}
+      {data ? <CardList tips={data} /> : null}
     </>
   );
 };

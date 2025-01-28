@@ -7,3 +7,27 @@
     @apply text-green-400 rounded-full shadow-md bg-white p-2;
   }
 }
+
+.user {
+  @include icon() {
+    @extend .fa-user;
+    font-size: 1.2em;
+    @apply text-green-400 rounded-full bg-white p-2;
+  }
+}
+
+.chevron {
+  @include icon() {
+    @extend .fa-chevron-down;
+    font-size: 0.8em;
+    @apply text-white;
+  }
+}
+
+.logout {
+  @include icon() {
+    @extend .fa-right-from-bracket;
+    font-size: 1em;
+    @apply text-white;
+  }
+}

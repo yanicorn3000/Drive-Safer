@@ -7,18 +7,3 @@
     @apply text-green-400 p-2;
   }
 }
-
-.like {
-  @include icon() {
-    @extend .fa-heart;
-    font-size: 1.1em;
-  }
-}
-
-.reply {
-  @include icon() {
-    @extend .fa-comment;
-    font-size: 1.1em;
-    @apply text-gray-400;
-  }
-}
