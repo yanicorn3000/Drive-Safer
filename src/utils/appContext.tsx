@@ -30,13 +30,10 @@ type AppProviderProps = {
 };
 
 export const AppProvider: FC<AppProviderProps> = ({ children }) => {
-  const { data: user, isLoading, isError, refetch } = useUserData();
+  const { data: user, refetch } = useUserData();
   const { mutateAsync: loginUser } = useLogin();
   const { mutateAsync: addUser } = useAddUser();
-  const [token, setToken] = useLocalStorageState<string | null>(
-    USER_LS_KEY,
-    null
-  );
+  const [, setToken] = useLocalStorageState<string | null>(USER_LS_KEY, null);
   const { mutateAsync: addPoints } = useUserPoints();
 
   const login = async (email: string, password: string): Promise<boolean> => {
@@ -51,8 +48,8 @@ export const AppProvider: FC<AppProviderProps> = ({ children }) => {
     }
   };
   const logout = (): void => {
-    refetch();
     setToken(null);
+    refetch();
   };
   const register = async (
     email: string,
@@ -77,7 +74,7 @@ export const AppProvider: FC<AppProviderProps> = ({ children }) => {
 
   return (
     <AppContext.Provider
-      value={{ user, login, logout, register, updatePoints }}
+      value={{ user: user ?? null, login, logout, register, updatePoints }}
     >
       {children}
     </AppContext.Provider>
@@ -87,7 +84,7 @@ export const AppProvider: FC<AppProviderProps> = ({ children }) => {
 export const useAppContext = (): AppContextType => {
   const context = useContext(AppContext);
   if (!context) {
-    throw new Error("Error useAppContet should be inside AppProvider");
+    throw new Error("Error: useAppContext should be inside AppProvider");
   }
   return context;
 };

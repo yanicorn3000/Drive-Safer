@@ -3,7 +3,10 @@ import { useState } from "react";
 const getLocalStorageData = (key: string) => {
   try {
     const data = localStorage.getItem(key);
-    return JSON.parse(data);
+    if (data) {
+      return JSON.parse(data);
+    }
+    return undefined;
   } catch (error) {
     return undefined;
   }
@@ -11,7 +14,7 @@ const getLocalStorageData = (key: string) => {
 
 export const useLocalStorageState = <T = any,>(
   KEY: string,
-  initialState = undefined
+  initialState?: T
 ) => {
   const [data, setStateData] = useState<T>(
     getLocalStorageData(KEY) ?? initialState

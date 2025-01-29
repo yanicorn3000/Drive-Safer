@@ -6,7 +6,7 @@ export type Tip = {
   alt: string;
   description: string;
   uuid: string;
-  likes: Like[];
+  likes: string[];
   comments: Comment[];
   tags: string[];
 };
@@ -20,7 +20,7 @@ export type Comment = {
   tipUUID: string;
   username?: string;
   message: string;
-  likes: Like[];
+  likes: string[];
   createdAt: string;
   isLiked: boolean;
 };

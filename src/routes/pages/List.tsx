@@ -8,8 +8,8 @@ const List: FC = () => {
     return <div>Ładowanie tipów...</div>;
   }
 
-  if (error) {
-    return <div>Błąd podczas pobierania tipów: {error.message}</div>;
+  if (error && typeof error === "object" && "message" in error) {
+    return <div>Błąd podczas pobierania tipów: {error.message as string}</div>;
   }
 
   return <CardList tips={data} />;
