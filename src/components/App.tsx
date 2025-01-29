@@ -9,7 +9,7 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <AppProvider>
-        <BrowserRouter>
+        <BrowserRouter basename="Drive-Safer">
           <Layout>
             <Routes />
           </Layout>
