@@ -43,7 +43,7 @@ export const fetchFromAPI = async <T = any,>(
   });
 
   if (req.status === 204) {
-    return {};
+    return undefined;
   }
 
   if (req.status >= 400) {
@@ -229,7 +229,7 @@ export const useUserData = () => {
       const token = getToken();
       if (!token) return null;
 
-      let user;
+      let user: User | null = null;
 
       try {
         const response = await fetchFromAPI<User>(`${apiUrl}/user/data`);

@@ -1,4 +1,4 @@
-import { useReducer, FC, useState } from "react";
+import { useReducer, FC } from "react";
 import Button from "../button/Button";
 import { useAppContext } from "../../utils/appContext";
 
@@ -91,13 +91,22 @@ const Quiz: FC<QuizProps> = ({ onClose }) => {
   const { user, updatePoints } = useAppContext();
 
   const handleAddPoints = async () => {
-    const success = await updatePoints(state.score);
-
     if (!user) {
       alert("Zaloguj się aby zapisać punkty!");
       return;
     }
-    onClose();
+
+    try {
+      const success = await updatePoints(state.score);
+      if (!success) {
+        alert("Nie udało się zaktualizować punktów. Spróbuj ponownie.");
+        return;
+      }
+      onClose();
+    } catch (error) {
+      console.error("Błąd podczas aktualizacji punktów:", error);
+      alert("Wystąpił błąd. Spróbuj ponownie później.");
+    }
   };
 
   const handleAnswer = (answer: string) => {
